@@ -1,7 +1,7 @@
 <template>
 	<view class="bg">
 		<navTab></navTab>
-		<img class="title_main" src="../../static/logo.png"/>
+		<img class="title_main" src="../../static/logo.png" />
 		<img class="info_menu" src="../../static/info_menu.png" />
 		<view class="content">
 			<div class="title_change">
@@ -12,14 +12,14 @@
 				</div>
 				<div class="background" :style="{ left: isFocused === 'story' ? '50%' : '0' }"></div>
 			</div>
-			<view  class="main_info">
+			<view class="main_info">
 				<view v-if="isFocused === 'landscape'">
-					<img class="jd_img" src="" />
-					<span class="name">茶山风景区</span>
+					<img class="jd_img" :src="main_info.imag1" />
+					<div class="name">{{main_info.name}}</div>
 				</view>
 				<view v-if="isFocused === 'story'">
-					<span class="title_two">栈桥</span>
-					<span class="txt_two">message</span>
+					<div class="title_two">{{main_info.name}}</div>
+					<div class="txt_two">{{main_info.jianjie}}</div>
 				</view>
 			</view>
 		</view>
@@ -33,25 +33,36 @@
 		ref
 	} from 'vue';
 	import axios from 'axios';
-	
+
+	const main_info = ref({})
+
 	const isFocused = ref('landscape');
 	const isFlipped = ref(false);
-	
+
 	const toggleFocus = (target) => {
 		isFocused.value = target;
 		isFlipped.value = false; // Reset flip state
 	}
-	
+
 	const toggleFlip = () => {
 		isFlipped.value = !isFlipped.value;
 	}
-	
-	onMounted(()=>{
-		axios.get('http://101.42.249.157:9001/homepage/getInfo').then(res=>{
-			console.log(res.data);
+
+	onMounted(() => {
+		uni.request({
+			url: 'http://hexpect.cn:9001/homepage/getInfo',
+			success(res) {
+				// console.log(res.data.data);
+				main_info.value = res.data.data;
+			},
+			fail(err) {
+				console.log('请求失败', err);
+			},
+			complete() {
+				// console.log('请求完成');
+			}
 		})
 	})
-	
 </script>
 
 <style scoped>
@@ -89,7 +100,7 @@
 		height: 62vh;
 		opacity: 1;
 		border-radius: 20px;
-		background: rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.7);
 	}
 
 	.jd_img {
@@ -102,24 +113,25 @@
 		opacity: 1;
 		border-radius: 20px;
 	}
-	
-	.name{
+
+	.name {
 		/*文本 2*/
-		position: fixed;
+		position: absolute;
 		display: flex;
-		left: 37vw;
-		top: 75vh;
+		top: 55vh;
+		/* 将顶部定位到父元素中间 */
+		left: 50%;
+		/* 将左边定位到父元素中间 */
+		transform: translate(-50%, -50%);
+		/* 通过负的自身宽高的一半来实现水平垂直居中 */
 		height: 35px;
-		opacity: 1;
+		width: 77vw;
 		/** 文本1 */
 		font-size: 24px;
 		font-weight: 400;
-		letter-spacing: 0px;
 		line-height: 34.75px;
 		color: rgba(0, 0, 0, 1);
-		text-align: left;
-		vertical-align: top;
-
+		justify-content: center;
 	}
 
 
@@ -171,9 +183,9 @@
 		transition: left 0.5s;
 		z-index: 0;
 	}
-	
+
 	/* 标题 */
-	.title_main{
+	.title_main {
 		position: fixed;
 		display: flex;
 		margin: 0 auto;
@@ -181,32 +193,34 @@
 		opacity: 1;
 		height: 9vh;
 	}
-	
+
 	/* 第二主页 */
-	.title_two{
+	.title_two {
 		/*文本 2*/
-		position: fixed;
+		position: absolute;
 		display: flex;
-		left: 45vw;
-		top: 24vh;
-		width: 48px;
+		top: 5vh;
+		/* 将顶部定位到父元素中间 */
+		left: 50%;
+		/* 将左边定位到父元素中间 */
+		transform: translate(-50%, -50%);
+		/* 通过负的自身宽高的一半来实现水平垂直居中 */
 		height: 35px;
-		opacity: 1;
+		width: 77vw;
 		/** 文本1 */
 		font-size: 24px;
 		font-weight: 400;
-		letter-spacing: 0px;
 		line-height: 34.75px;
 		color: rgba(0, 0, 0, 1);
-		text-align: left;
-		vertical-align: top;
+		justify-content: center;
 	}
-	.txt_two{
+
+	.txt_two {
 		/*文本 3*/
 		position: fixed;
 		display: flex;
 		left: 20vw;
-		top: 30vh;
+		top: 32vh;
 		width: 63vw;
 		height: 358px;
 		opacity: 1;

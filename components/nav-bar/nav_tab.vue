@@ -1,6 +1,6 @@
 <template>
 	<view class="bar">
-		<image class="bar_index" src="../../static/tabindex.png" mode=""></image>
+		<image class="bar_index" src="../../static/tabbar-icons/tsing.png" mode=""></image>
 		<view @click="goshoucang" class="bar_item">
 			<image class="bar_item_img" src="../../static/tabbar-icons/me.png" mode=""></image>
 			<view class="bar_item_text">

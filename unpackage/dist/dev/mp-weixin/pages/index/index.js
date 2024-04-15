@@ -7,6 +7,7 @@ const navTab = () => "../../components/nav-bar/nav_tab.js";
 const _sfc_main = {
   __name: "index",
   setup(__props) {
+    const main_info = common_vendor.ref({});
     const isFocused = common_vendor.ref("landscape");
     const isFlipped = common_vendor.ref(false);
     const toggleFocus = (target) => {
@@ -14,8 +15,16 @@ const _sfc_main = {
       isFlipped.value = false;
     };
     common_vendor.onMounted(() => {
-      common_vendor.axios.get("http://101.42.249.157:9001/homepage/getInfo").then((res) => {
-        console.log(res.data);
+      common_vendor.index.request({
+        url: "http://hexpect.cn:9001/homepage/getInfo",
+        success(res) {
+          main_info.value = res.data.data;
+        },
+        fail(err) {
+          console.log("请求失败", err);
+        },
+        complete() {
+        }
       });
     });
     return (_ctx, _cache) => {
@@ -26,9 +35,15 @@ const _sfc_main = {
         d: isFocused.value === "story" ? 1 : "",
         e: isFocused.value === "story" ? "50%" : "0",
         f: isFocused.value === "landscape"
-      }, isFocused.value === "landscape" ? {} : {}, {
-        g: isFocused.value === "story"
-      }, isFocused.value === "story" ? {} : {});
+      }, isFocused.value === "landscape" ? {
+        g: main_info.value.imag1,
+        h: common_vendor.t(main_info.value.name)
+      } : {}, {
+        i: isFocused.value === "story"
+      }, isFocused.value === "story" ? {
+        j: common_vendor.t(main_info.value.name),
+        k: common_vendor.t(main_info.value.jianjie)
+      } : {});
     };
   }
 };

@@ -33,7 +33,7 @@
 		height: 62vh;
 		opacity: 1;
 		border-radius: 20px;
-		background: rgba(255, 255, 255, 0.9);
+		background: rgba(255, 255, 255, 0.7);
 }
 .jd_img.data-v-1cf27b2a {
 		position: fixed;
@@ -45,22 +45,24 @@
 		opacity: 1;
 		border-radius: 20px;
 }
-.name.data-v-1cf27b2a{
+.name.data-v-1cf27b2a {
 		/*文本 2*/
-		position: fixed;
+		position: absolute;
 		display: flex;
-		left: 37vw;
-		top: 75vh;
+		top: 55vh;
+		/* 将顶部定位到父元素中间 */
+		left: 50%;
+		/* 将左边定位到父元素中间 */
+		transform: translate(-50%, -50%);
+		/* 通过负的自身宽高的一半来实现水平垂直居中 */
 		height: 35px;
-		opacity: 1;
+		width: 77vw;
 		/** 文本1 */
 		font-size: 24px;
 		font-weight: 400;
-		letter-spacing: 0px;
 		line-height: 34.75px;
 		color: rgba(0, 0, 0, 1);
-		text-align: left;
-		vertical-align: top;
+		justify-content: center;
 }
 
 
@@ -108,9 +110,9 @@
 		transition: left 0.5s;
 		z-index: 0;
 }
-	
+
 	/* 标题 */
-.title_main.data-v-1cf27b2a{
+.title_main.data-v-1cf27b2a {
 		position: fixed;
 		display: flex;
 		margin: 0 auto;
@@ -118,32 +120,33 @@
 		opacity: 1;
 		height: 9vh;
 }
-	
+
 	/* 第二主页 */
-.title_two.data-v-1cf27b2a{
+.title_two.data-v-1cf27b2a {
 		/*文本 2*/
-		position: fixed;
+		position: absolute;
 		display: flex;
-		left: 45vw;
-		top: 24vh;
-		width: 48px;
+		top: 5vh;
+		/* 将顶部定位到父元素中间 */
+		left: 50%;
+		/* 将左边定位到父元素中间 */
+		transform: translate(-50%, -50%);
+		/* 通过负的自身宽高的一半来实现水平垂直居中 */
 		height: 35px;
-		opacity: 1;
+		width: 77vw;
 		/** 文本1 */
 		font-size: 24px;
 		font-weight: 400;
-		letter-spacing: 0px;
 		line-height: 34.75px;
 		color: rgba(0, 0, 0, 1);
-		text-align: left;
-		vertical-align: top;
+		justify-content: center;
 }
-.txt_two.data-v-1cf27b2a{
+.txt_two.data-v-1cf27b2a {
 		/*文本 3*/
 		position: fixed;
 		display: flex;
 		left: 20vw;
-		top: 30vh;
+		top: 32vh;
 		width: 63vw;
 		height: 358px;
 		opacity: 1;
