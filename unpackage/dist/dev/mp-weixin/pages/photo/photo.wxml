@@ -1,1 +1,1 @@
-<view><view>123322</view><nav-tab u-i="eacbd38e-0" bind:__l="__l"></nav-tab></view>
+<view class="main_info data-v-5140b150" bindtouchstart="{{c}}" bindtouchmove="{{d}}" bindtouchend="{{e}}" style="{{'transform:' + f}}"><view class="data-v-5140b150"><view class="title_two data-v-5140b150">{{a}}</view><view class="txt_two data-v-5140b150">{{b}}</view></view></view>

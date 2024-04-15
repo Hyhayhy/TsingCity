@@ -1,0 +1,56 @@
+
+.main_info.data-v-5140b150 {
+		transition: transform 0.3s;
+		overflow: hidden;
+		
+		position: fixed;
+		display: flex;
+		left: 12vw;
+		top: 21vh;
+		width: 77vw;
+		height: 62vh;
+		opacity: 1;
+		border-radius: 20px;
+		background: rgba(255, 255, 255, 0.7);
+}
+
+	/* 第二主页 */
+.title_two.data-v-5140b150 {
+		/*文本 2*/
+		position: absolute;
+		display: flex;
+		top: 5vh;
+		/* 将顶部定位到父元素中间 */
+		left: 50%;
+		/* 将左边定位到父元素中间 */
+		transform: translate(-50%, -50%);
+		/* 通过负的自身宽高的一半来实现水平垂直居中 */
+		height: 35px;
+		width: 77vw;
+		/** 文本1 */
+		font-size: 24px;
+		font-weight: 400;
+		line-height: 34.75px;
+		color: rgba(0, 0, 0, 1);
+		justify-content: center;
+}
+.txt_two.data-v-5140b150 {
+		/*文本 3*/
+		position: fixed;
+		display: flex;
+		left: 20vw;
+		top: 32vh;
+		width: 63vw;
+		height: 358px;
+		opacity: 1;
+		/** 文本1 */
+		font-size: 14px;
+		font-weight: 400;
+		letter-spacing: 0px;
+		line-height: 21px;
+		color: rgba(0, 0, 0, 1);
+		text-align: left;
+		vertical-align: top;
+		letter-spacing: 1px;
+		text-indent: 30px;
+}
