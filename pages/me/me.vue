@@ -15,6 +15,7 @@
 // 	// loginSuccess(res.result)
 // 	console.log(res)
 // }
+import navTab from '../../components/nav-bar/nav_tab.vue'
 const onGetphonenumber=uni.login({
 	provider: 'weixin',
 	univerifyStyle: { 
@@ -26,6 +27,7 @@ const onGetphonenumber=uni.login({
 
 <template>
   <view class="viewport">
+	  <navTab></navTab>
     <!-- <view class="logo">
       <image
         src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/logo_icon.png"

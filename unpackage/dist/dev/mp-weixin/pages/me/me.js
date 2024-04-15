@@ -1,5 +1,9 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Math) {
+  navTab();
+}
+const navTab = () => "../../components/nav-bar/nav_tab.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "me",
   setup(__props) {

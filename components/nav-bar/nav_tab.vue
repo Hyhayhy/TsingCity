@@ -1,87 +1,103 @@
 <template>
-	<view>
-		<div class="wrapper">
-		  <div class="navbar">
-		    <i class="fas fa-home icon-home"></i>
-		    <i class="fas fa-cog icon-settings"></i>
-		
-		    <div class="circle">
-		      <i class="fas fa-plus plus-icon"></i>
-		    </div>
-		    <div class="circleBackground"></div>
-		  </div>
-		</div>
+	<view class="bar">
+		<image class="bar_index" src="../../static/tabindex.png" mode=""></image>
+		<view @click="goshoucang" class="bar_item">
+			<image class="bar_item_img" src="../../static/tabbar-icons/me.png" mode=""></image>
+			<view class="bar_item_text">
+				收藏
+			</view>
+		</view>
+		<view @click="gomap" class="bar_item">
+			<image class="bar_item_img" src="../../static/tabbar-icons/map.png" mode=""></image>
+			<view class="bar_item_text">
+				地图
+			</view>
+		</view>
+		<view class="bar_item">
+			<view class="bar_item_img">
+	
+			</view>
+			<view class="bar_item_text">
+				首页
+			</view>
+		</view>
+		<view @click="goquestion" class="bar_item">
+			<image class="bar_item_img" src="../../static/tabbar-icons/layer.png" mode=""></image>
+			<view class="bar_item_text">
+				答题
+			</view>
+		</view>
+		<view @click="gophoto" class="bar_item">
+			<image class="bar_item_img" src="../../static/tabbar-icons/gallery.png" mode=""></image>
+			<view class="bar_item_text">
+				图片
+			</view>
+		</view>
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-		}
-	}}
+<script setup>
+	const gophoto=()=>{
+		uni.navigateTo({
+			url: "/pages/photo/photo",
+		});
+	}
+	const goquestion=()=>{
+		uni.navigateTo({
+			url: "/pages/question/question",
+		});
+	}
+	const gomap=()=>{
+		uni.navigateTo({
+			url: "/pages/math/math",
+		});
+	}
+	const goshoucang=()=>{
+		uni.navigateTo({
+			url: "/pages/me/me",
+		});
+	}
 </script>
 
-<style lang="scss">
-	
-	
-	$navbar-height: 100px;
-	$circle-radius: 80px;
-	$backgroundColor: rgb(253, 192, 223);
-
-	.wrapper {
-	  height: 100%;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  background-color: $backgroundColor;
+<style scoped>
+	.bar_index {
+		position: absolute;
+		top: -50rpx;
+		left: 42%;
+		width: 122rpx;
+		height: 122rpx;
 	}
 	
-	.navbar {
-	  position: fixed;
-	  bottom: env(safe-area-inset-bottom);
-	  height: $navbar-height;
-	  min-width: 400px;
-	  padding-left: 35px;
-	  padding-right: 35px;
-	  display: flex;
-	  justify-content: space-between;
-	  align-items: center;
-	  border-radius: 25px;
-	  background-color: white;
-	  box-shadow: 0 10px 20px rgba(82, 74, 74, 0.3);
+	.bar_item_text {
+	
+		color: rgba(133, 163, 187, 1);
 	}
 	
-	.circle {
-	  position: absolute;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  bottom: calc(100px - ($circle-radius / 2));
-	  margin-bottom: 0;
-	  height: $circle-radius;
-	  width: $circle-radius;
-	  border-radius: 40px;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  align-items: center;
-	  overflow: hidden;
-	  background-color: rgb(255, 94, 0);
-	  z-index: 9;
-	  box-shadow: 0 5px 5px rgba(255, 147, 85, 0.35);
-	  transition: height 0.3s;
+	.bar_item_img {
+		width: 28rpx;
+		height: 36rpx;
+		margin-bottom: 30rpx;
 	}
 	
-	.circleBackground {
-	  position: absolute;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  bottom: calc(100px - #{$circle-radius + 20} / 2);
-	  margin-bottom: 0;
-	  height: calc(#{$circle-radius} + 20px);
-	  width: calc(#{$circle-radius} + 20px);
-	  border-radius: calc(#{$circle-radius + 20} / 2);
-	  background-color: $backgroundColor;
+	.bar_item {
+		width: 20%;
+	
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	.bar {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		height: 160rpx;
+		background: url('../../static/tabbarBG.png') no-repeat;
+		background-size: 100%;
+		z-index: 999;
 	}
 	
 </style>

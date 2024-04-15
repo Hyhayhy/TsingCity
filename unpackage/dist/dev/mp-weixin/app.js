@@ -9,18 +9,7 @@ if (!Math) {
   "./pages/question/question.js";
   "./pages/login/login.js";
 }
-const _sfc_main = {
-  onLaunch: function() {
-    console.log("App Launch");
-  },
-  onShow: function() {
-    console.log("App Show");
-    common_vendor.index.hideTabBar();
-  },
-  onHide: function() {
-    console.log("App Hide");
-  }
-};
+const _sfc_main = {};
 const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);

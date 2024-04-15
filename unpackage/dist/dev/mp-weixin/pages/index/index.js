@@ -1,45 +1,36 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Math) {
+  navTab();
+}
 const navTab = () => "../../components/nav-bar/nav_tab.js";
 const _sfc_main = {
-  components: {
-    navTab
-  },
-  data() {
-    return {};
-  },
-  onLoad() {
-  },
-  methods: {
-    gophoto() {
-      common_vendor.index.navigateTo({
-        url: "/pages/photo/photo"
+  __name: "index",
+  setup(__props) {
+    const isFocused = common_vendor.ref("landscape");
+    const isFlipped = common_vendor.ref(false);
+    const toggleFocus = (target) => {
+      isFocused.value = target;
+      isFlipped.value = false;
+    };
+    common_vendor.onMounted(() => {
+      common_vendor.axios.get("http://101.42.249.157:9001/homepage/getInfo").then((res) => {
+        console.log(res.data);
       });
-    },
-    goquestion() {
-      common_vendor.index.navigateTo({
-        url: "/pages/question/question"
-      });
-    },
-    gomap() {
-      common_vendor.index.navigateTo({
-        url: "/pages/math/math"
-      });
-    },
-    goshoucang() {
-      common_vendor.index.navigateTo({
-        url: "/pages/me/me"
-      });
-    }
+    });
+    return (_ctx, _cache) => {
+      return common_vendor.e({
+        a: common_vendor.o(($event) => toggleFocus("landscape")),
+        b: isFocused.value === "landscape" ? 1 : "",
+        c: common_vendor.o(($event) => toggleFocus("story")),
+        d: isFocused.value === "story" ? 1 : "",
+        e: isFocused.value === "story" ? "50%" : "0",
+        f: isFocused.value === "landscape"
+      }, isFocused.value === "landscape" ? {} : {}, {
+        g: isFocused.value === "story"
+      }, isFocused.value === "story" ? {} : {});
+    };
   }
 };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return {
-    a: common_vendor.o((...args) => $options.goshoucang && $options.goshoucang(...args)),
-    b: common_vendor.o((...args) => $options.gomap && $options.gomap(...args)),
-    c: common_vendor.o((...args) => $options.goquestion && $options.goquestion(...args)),
-    d: common_vendor.o((...args) => $options.gophoto && $options.gophoto(...args))
-  };
-}
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/apple/Desktop/TsingCity/pages/index/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "/Users/apple/Desktop/TsingCity/pages/index/index.vue"]]);
 wx.createPage(MiniProgramPage);
