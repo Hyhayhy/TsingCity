@@ -10,7 +10,7 @@
 		<view @click="gomap" class="bar_item">
 			<image class="bar_item_img" src="../../static/tabbar-icons/map.png" mode=""></image>
 			<view class="bar_item_text">
-				地图
+				景点
 			</view>
 		</view>
 		<view class="bar_item">

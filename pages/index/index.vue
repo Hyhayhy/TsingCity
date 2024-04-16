@@ -133,7 +133,7 @@
 	};
 
 	const addNewInfo = (res) => {
-		console.log(res);
+		// console.log(res);
 		const newInfo = res
 		infos.push(newInfo); // 使用数组的 push 方法添加新数据
 	};

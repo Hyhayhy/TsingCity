@@ -88,7 +88,6 @@ const _sfc_main = {
       currentInfo.value = infos[currentIndex];
     };
     const addNewInfo = (res) => {
-      console.log(res);
       const newInfo = res;
       infos.push(newInfo);
     };
