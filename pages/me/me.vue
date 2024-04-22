@@ -1,172 +1,111 @@
-// src/pages/login/login.vue
-
-<script setup lang="ts">
-//
-// import {postLoginWxMinAPI} from '@/services/login'
-// import { onLoad } from '@dcloudio/uni-app'
-// let code = ''
-// onLoad(async () => {
-//   const res = await wx.login()
-//   code = res.code
-// })
-// const onGetphonenumber=async(ev)=>{
-// 	const { encryptedData, iv } = ev.detail
-// 	const res = await postLoginWxMinAPI({ code, encryptedData, iv })
-// 	// loginSuccess(res.result)
-// 	console.log(res)
-// }
-import navTab from '../../components/nav-bar/nav_tab.vue'
-const onGetphonenumber=uni.login({
-	provider: 'weixin',
-	univerifyStyle: { 
-    fullScreen: true
-  }
-})
-
-</script>
-
 <template>
-  <view class="viewport">
-	  <navTab></navTab>
-    <!-- <view class="logo">
-      <image
-        src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/logo_icon.png"
-      ></image>
-    </view> -->
-    <view class="login">
-      <button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
-        <text class="icon icon-phone"></text>
-        手机号快捷登录
-      </button>
-      <view class="extra">
-        <view class="caption">
-          <text>其他登录方式</text>
-        </view>
-        <view class="options">
-          <button>
-            <text class="icon icon-phone">模拟快捷登录</text>
-          </button>
+  <view class="Index">
+    <!-- 瀑布流布局列表 -->
+    <view class="pubuBox">
+      <view class="pubuItem">
+        <view class="item-masonry" v-for="(item, index) in comList" :key="index">
+          <image :src="item.img" mode="widthFix"></image>
+          <view class="listtitle">
+            <!-- 这是没有高度的父盒子（下半部分） -->
+            <!-- <view class="listtitle1">{{ item.name }}</view> -->
+            <view class="listtitle3">
+              {{ item.name }}
+            </view>
+          </view>
         </view>
       </view>
-      <view class="tips">登录/注册即视为你同意《服务条款》和《青城隐私协议》</view>
     </view>
   </view>
 </template>
 
-<style lang="scss">
-page {
-  height: 100%;
-}
-
-.viewport {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 20rpx 40rpx;
-}
-
-.logo {
-  flex: 1;
-  text-align: center;
-  image {
-    width: 220rpx;
-    height: 220rpx;
-    margin-top: 15vh;
+<script setup>
+const comList = [
+  {
+    img: "https://img2.baidu.com/it/u=3853345508,384760633&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1689958800&t=210689b7eb06d7c78958d7063151cba6",
+    name: '商品的名称，可以很长很长...',
+  },
+  {
+    img: 'https://img2.baidu.com/it/u=1814268193,3619863984&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1689958800&t=d6764859a9740bb4aead7703daa61876',
+    name: '商品名称会在超出两行时候自动折叠',
+  },
+  {
+    img: 'https://img0.baidu.com/it/u=1604010673,2427861166&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1689958800&t=2e255208580c0570167a800344d3aa59',
+    name: '只有一行标题时高度为39',
+    commdityPrice: 100
+  },
+  {
+    img: 'https://img0.baidu.com/it/u=2627496060,1933351908&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1689958800&t=fd7a89ad586d338543b6916df7083e4f',
+    name: '具体样式您可以自定义',
+  },
+  {
+    img: 'https://img2.baidu.com/it/u=3853345508,384760633&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1689958800&t=210689b7eb06d7c78958d7063151cba6',
+    name: 'vue的H5页面也是如此使用',
   }
-}
+]; //商品列表
+</script>
 
-.login {
-  display: flex;
-  flex-direction: column;
-  height: 60vh;
-  padding: 40rpx 20rpx 20rpx;
-
-  .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+<style scoped="scoped" lang="scss">
+  //瀑布流
+  page {
+    background-color: #eee;
+    height: 100%;
+  }
+  .pubuBox {
+    padding: 22rpx;
+  }
+  .pubuItem {
+    column-count: 2;
+    column-gap: 20rpx;
+  }
+  .item-masonry {
+    box-sizing: border-box;
+    border-radius: 15rpx;
+    overflow: hidden;
+    background-color: #fff;
+    break-inside: avoid;
+    /*避免在元素内部插入分页符*/
+    box-sizing: border-box;
+    margin-bottom: 20rpx;
+    box-shadow: 0px 0px 28rpx 1rpx rgba(78, 101, 153, 0.14);
+  }
+  .item-masonry image {
     width: 100%;
-    height: 80rpx;
-    font-size: 28rpx;
-    border-radius: 72rpx;
-    color: #fff;
-    .icon {
-      font-size: 40rpx;
-      margin-right: 6rpx;
+  }
+  .listtitle {
+    padding-left: 22rpx;
+    font-size: 24rpx;
+    padding-bottom: 22rpx;
+    .listtitle1 {
+      line-height: 39rpx;
+      text-overflow: -o-ellipsis-lastline;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      min-height: 39rpx;
+      max-height: 78rpx;
     }
-  }
-
-  .phone {
-    background-color: #28bb9c;
-  }
-
-  .wechat {
-    background-color: #06c05f;
-  }
-
-  .extra {
-    flex: 1;
-    padding: 70rpx 70rpx 0;
-    .caption {
-      width: 440rpx;
-      line-height: 1;
-      border-top: 1rpx solid #ddd;
-      font-size: 26rpx;
-      color: #999;
-      position: relative;
-      text {
-        transform: translate(-40%);
-        background-color: #fff;
-        position: absolute;
-        top: -12rpx;
-        left: 50%;
+    .listtitle2 {
+      color: #ff0000;
+      font-size: 32rpx;
+      line-height: 32rpx;
+      font-weight: bold;
+      padding-top: 22rpx;
+      .listtitle2son {
+        font-size: 32rpx;
       }
     }
-
-    .options {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 70rpx;
-      button {
-        padding: 0;
-        background-color: transparent;
-      }
-    }
-
-    .icon {
-      font-size: 24rpx;
-      color: #444;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      &::before {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 80rpx;
-        height: 80rpx;
-        margin-bottom: 6rpx;
-        font-size: 40rpx;
-        border: 1rpx solid #444;
-        border-radius: 50%;
-      }
-    }
-    .icon-weixin::before {
-      border-color: #06c05f;
-      color: #06c05f;
+    .listtitle3 {
+      font-size: 28rpx;
+      color: #909399;
+      line-height: 32rpx;
+      padding-top: 22rpx;
     }
   }
-}
-
-.tips {
-  position: absolute;
-  bottom: 80rpx;
-  left: 20rpx;
-  right: 20rpx;
-  font-size: 22rpx;
-  color: #999;
-  text-align: center;
-}
+  .Index {
+    width: 100%;
+    height: 100%;
+  }
 </style>

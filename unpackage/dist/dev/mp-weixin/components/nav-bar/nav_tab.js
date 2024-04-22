@@ -10,7 +10,7 @@ const _sfc_main = {
     };
     const goquestion = () => {
       common_vendor.index.navigateTo({
-        url: "/pages/question/question"
+        url: "/pages/login/login"
       });
     };
     const gomap = () => {

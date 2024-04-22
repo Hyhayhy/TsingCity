@@ -23,7 +23,7 @@
 	onMounted(() => {
 		get_list()
 	})
-</script>
+</script> 
 <template>
 	<view>
 		<navTab></navTab>
@@ -37,5 +37,4 @@
 	</view>
 </template>
 <style scoped>
-
 </style>

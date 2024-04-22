@@ -37,7 +37,7 @@ const _sfc_main = {
         suoshuqu: "5",
         jingdu: "120.38494",
         weidu: "36.06203",
-        imag1: "https://tsingcity-1310015893.cos.ap-nanjing.myqcloud.com/qingcheng/市南区/五四广场/2c5d0f28264305cfdd3b1a09676bdd4.png",
+        imag1: "https://tsingcity-1310015893.cos.ap-nanjing.myqcloud.com/qingcheng/市南区/五四广场/c637d6a44e4592155eb4cf0702b7455.png",
         dj: null
       },
       {
