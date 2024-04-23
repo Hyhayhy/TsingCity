@@ -35,7 +35,14 @@
 		onMounted,
 		ref
 	} from 'vue';
-	import axios from 'axios';
+	
+	import {
+		useStore
+	} from '../../store/index'
+	
+	import {
+		storeToRefs
+	} from 'pinia';
 
 	const main_info = ref({})
 
@@ -137,9 +144,20 @@
 		const newInfo = res
 		infos.push(newInfo); // 使用数组的 push 方法添加新数据
 	};
-
+	
 	onMounted(() => {
 		get_info()
+		const store = useStore();
+		const {
+				uid,
+				login
+			} = storeToRefs(store)
+		if (!store.$state.loginState) {
+		  // 用户未登录，进行相应的处理，比如跳转到登录页面
+		  uni.redirectTo({
+		    url: '/pages/login/login'
+		  });
+		}
 	})
 </script>
 

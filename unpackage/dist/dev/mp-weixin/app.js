@@ -10,11 +10,14 @@ if (!Math) {
   "./pages/login/login.js";
 }
 const _sfc_main = {};
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
+  app.use(common_vendor.createPinia());
   return {
-    app
+    app,
+    Pinia: common_vendor.Pinia
+    // 此处必须将 Pinia 返回
   };
 }
 createApp().app.mount("#app");

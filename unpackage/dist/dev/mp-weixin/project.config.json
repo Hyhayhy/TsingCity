@@ -15,12 +15,11 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    },
-    "condition": false
+    }
   },
   "compileType": "miniprogram",
-  "libVersion": "2.33.0",
-  "appid": "touristappid",
+  "libVersion": "3.4.2",
+  "appid": "wx1466e07ddb1e31e7",
   "projectname": "TsingCity",
   "condition": {},
   "editorSetting": {

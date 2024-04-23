@@ -33,5 +33,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-a057aa17"], ["__file", "/Users/apple/Desktop/TsingCity/components/nav-bar/nav_tab.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-a057aa17"], ["__file", "D:/TsingCity/components/nav-bar/nav_tab.vue"]]);
 wx.createComponent(Component);

@@ -68,5 +68,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-5140b150"], ["__file", "/Users/apple/Desktop/TsingCity/pages/photo/photo.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-5140b150"], ["__file", "D:/TsingCity/pages/photo/photo.vue"]]);
 wx.createPage(MiniProgramPage);

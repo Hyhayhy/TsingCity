@@ -38,7 +38,7 @@ const _sfc_main = {
       return {
         a: common_vendor.f(list_info.value, (item, k0, i0) => {
           return {
-            a: "0f22edd3-3-" + i0 + "," + ("0f22edd3-2-" + i0),
+            a: "025a3990-3-" + i0 + "," + ("025a3990-2-" + i0),
             b: common_vendor.p({
               title: item.name,
               note: item.dengji,
@@ -47,7 +47,7 @@ const _sfc_main = {
               ["thumb-size"]: "lg",
               rightText: "详细"
             }),
-            c: "0f22edd3-2-" + i0 + ",0f22edd3-1"
+            c: "025a3990-2-" + i0 + ",025a3990-1"
           };
         }),
         b: common_vendor.p({
@@ -58,5 +58,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/pages/math/math.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/pages/math/math.vue"]]);
 wx.createPage(MiniProgramPage);

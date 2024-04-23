@@ -1,177 +1,77 @@
-// src/pages/login/login.vue
-
-<script setup lang="ts">
-	import { onLoad } from '@dcloudio/uni-app'
-	import { postLoginWxMinAPI } from '@/services/login'
-	// 获取 code 登录凭证
-	let code = ''
-	onLoad(async () => {
-		const res = await wx.login()
-		code = res.code
-	})
-
-	// 获取用户手机号码
-	const onGetphonenumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
-		console.log(12);
-		const {
-			encryptedData,
-			iv
-		} = ev.detail
-		const res = await postLoginWxMinAPI({
-			code,
-			encryptedData,
-			iv
-		})
-		// loginSuccess(res.result)
-		console.log(res);
-	}
-</script>
-
 <template>
-	<view class="viewport">
-		<view class="logo">
-			<image src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/logo_icon.png"></image>
-		</view> 
-		<view class="login">
-			<button class="button phone" open-type="getPhoneNumber" @getphonenumber="onGetphonenumber">
-				<text class="icon icon-phone"></text>
-				手机号快捷登录
-			</button>
-			<view class="extra">
-				<view class="caption">
-					<text>其他登录方式</text>
-				</view>
-				<view class="options">
-					<button>
-						<text class="icon icon-phone">模拟快捷登录</text>
-					</button>
-				</view>
-			</view>
-			<view class="tips">登录/注册即视为你同意《服务条款》和《小兔鲜儿隐私协议》</view>
-		</view>
+	<view>
+		<button open-type="getUserInfo" @getuserinfo="logins">点击获取</button>
+		<button @click="stare">状态</button>
 	</view>
 </template>
 
-<style lang="scss">
-	page {
-		height: 100%;
-	}
+<script setup>
+	import {
+		ref
+	} from 'vue';
+	import {
+		useStore
+	} from '../../store/index'
+	import {
+		storeToRefs
+	} from 'pinia';
+	const usr_info = ref()
+	const logins = (e) => {
+		uni.login({
+			"provider": "weixin",
+			success: function(event) {
+				console.log(event);
+				const {
+					code
+				} = event
+				uni.request({
+					url: 'http://101.42.249.157:9001/userInfos/login', //仅为示例，并非真实接口地址。
+					method: 'POST',
+					data: {
+						code: event.code
+					},
+					success: (res) => {
+						//获得token完成登录
+						// console.log(res.header.Authorization);
+						// console.log(res.data.data);
+						let str = res.data.data
+						// 使用正则表达式提取键值对
+						let regex = /(\w+)\=([^\,]+)(?:\,|\))/g;
+						let match;
+						let jsonObj = {};
 
-	.viewport {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		padding: 20rpx 40rpx;
-	}
+						while ((match = regex.exec(str)) !== null) {
+							// 将键值对添加到JSON对象中
+							jsonObj[match[1]] = match[2];
+						}
 
-	.logo {
-		flex: 1;
-		text-align: center;
-
-		image {
-			width: 220rpx;
-			height: 220rpx;
-			margin-top: 15vh;
-		}
-	}
-
-	.login {
-		display: flex;
-		flex-direction: column;
-		height: 60vh;
-		padding: 40rpx 20rpx 20rpx;
-
-		.button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 100%;
-			height: 80rpx;
-			font-size: 28rpx;
-			border-radius: 72rpx;
-			color: #fff;
-
-			.icon {
-				font-size: 40rpx;
-				margin-right: 6rpx;
+						// 输出转换后的JSON对象
+						usr_info.value = jsonObj
+						console.log(usr_info.value.uid);
+					}
+				});
+			},
+			fail: function(err) {
+				// 登录授权失败
+				// err.code是错误码
 			}
-		}
-
-		.phone {
-			background-color: #28bb9c;
-		}
-
-		.wechat {
-			background-color: #06c05f;
-		}
-
-		.extra {
-			flex: 1;
-			padding: 70rpx 70rpx 0;
-
-			.caption {
-				width: 440rpx;
-				line-height: 1;
-				border-top: 1rpx solid #ddd;
-				font-size: 26rpx;
-				color: #999;
-				position: relative;
-
-				text {
-					transform: translate(-40%);
-					background-color: #fff;
-					position: absolute;
-					top: -12rpx;
-					left: 50%;
-				}
-			}
-
-			.options {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin-top: 70rpx;
-
-				button {
-					padding: 0;
-					background-color: transparent;
-				}
-			}
-
-			.icon {
-				font-size: 24rpx;
-				color: #444;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-
-				&::before {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					width: 80rpx;
-					height: 80rpx;
-					margin-bottom: 6rpx;
-					font-size: 40rpx;
-					border: 1rpx solid #444;
-					border-radius: 50%;
-				}
-			}
-
-			.icon-weixin::before {
-				border-color: #06c05f;
-				color: #06c05f;
-			}
-		}
+		})
 	}
-
-	.tips {
-		position: absolute;
-		bottom: 80rpx;
-		left: 20rpx;
-		right: 20rpx;
-		font-size: 22rpx;
-		color: #999;
-		text-align: center;
+	const store = useStore();
+	const {
+			uid,
+			login
+		} = storeToRefs(store)
+	function stare(){
+		console.log(123);
+		store.setUid(usr_info.value.uid);
+		store.setLogin(true);
+		console.log(store.$state.uid);
+		console.log(store.$state.loginState);
 	}
+</script>
+
+
+<style scoped>
+
 </style>

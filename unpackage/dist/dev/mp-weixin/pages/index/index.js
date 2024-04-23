@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const store_index = require("../../store/index.js");
 if (!Math) {
   navTab();
 }
@@ -93,6 +94,13 @@ const _sfc_main = {
     };
     common_vendor.onMounted(() => {
       get_info();
+      const store = store_index.useStore();
+      common_vendor.storeToRefs(store);
+      if (!store.$state.loginState) {
+        common_vendor.index.redirectTo({
+          url: "/pages/login/login"
+        });
+      }
     });
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -119,5 +127,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "/Users/apple/Desktop/TsingCity/pages/index/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/TsingCity/pages/index/index.vue"]]);
 wx.createPage(MiniProgramPage);
