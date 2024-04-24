@@ -48,8 +48,8 @@ const _sfc_main = {
   },
   watch: {
     title(newVal) {
-      if (common_vendor.index.report && newVal !== "") {
-        common_vendor.index.report("title", newVal);
+      if (common_vendor.index$1.report && newVal !== "") {
+        common_vendor.index$1.report("title", newVal);
       }
     }
   },
@@ -79,5 +79,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     l: $options._padding
   });
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/TsingCity/uni_modules/uni-section/components/uni-section/uni-section.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/apple/Desktop/TsingCity/uni_modules/uni-section/components/uni-section/uni-section.vue"]]);
 wx.createComponent(Component);

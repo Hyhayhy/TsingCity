@@ -3,31 +3,31 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "青城"
 			}
 		},
 		{
 			"path": "pages/math/math",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "景点信息"
 			}
 		},
 		{
 			"path": "pages/me/me",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "我的"
 			}
 		},
 		{
 			"path": "pages/photo/photo",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "照片"
 			}
 		},
 		{
 			"path": "pages/question/question",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "问题"
 			}
 		}
 	    ,{
@@ -36,6 +36,14 @@
             {
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/math/jdinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "详细"
             }
             
         }

@@ -5,18 +5,11 @@ import {
 export const useStore = defineStore('counter', {
 	state: () => {
 		return {
-			count: '',
 			uid:'',
 			loginState:false
 		};
 	},
 	actions: {
-		increment(e) {
-			this.count=e;
-		},
-		decrement() {
-			this.count--;
-		},
 		setUid(e){
 			this.uid=e;
 		},
@@ -24,4 +17,8 @@ export const useStore = defineStore('counter', {
 			this.loginState=e
 		}
 	},
+	// 开启数据持久化
+	  persist: {
+	    enabled: true,
+	  },
 });

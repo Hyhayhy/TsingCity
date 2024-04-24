@@ -1,0 +1,89 @@
+
+.bg.data-v-54df7d77 {
+		background-image: url('https://img-1310015893.cos.ap-beijing.myqcloud.com/bgimg.png');
+		height: 100vh;
+		background-size: 100% 100%;
+		width: 100vw;
+		position: fixed;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+}
+
+	/*矩形 1*/
+.content.data-v-54df7d77 {
+		position: fixed;
+		display: flex;
+		left: 5vw;
+		top: 10vh;
+		width: 90vw;
+		height: 80vh;
+		opacity: 1;
+		border-radius: 5px;
+		background: rgba(255, 255, 255, 0.9);
+		box-shadow: 0px 4px 6px 4px rgba(0, 0, 0, 0.25);
+}
+.txt1.data-v-54df7d77 {
+		/*文本 1*/
+		position: fixed;
+		display: flex;
+		left: 16vw;
+		top: 14vh;
+		height: 33px;
+		opacity: 1;
+		/** 文本1 */
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: 0px;
+		line-height: 32.93px;
+		color: rgba(0, 0, 0, 1);
+		text-align: left;
+		vertical-align: top;
+}
+.txt2.data-v-54df7d77 {
+		/*文本 2*/
+		position: fixed;
+		display: flex;
+		left: 16vw;
+		top: 20vh;
+		height: 20px;
+		opacity: 1;
+		/** 文本1 */
+		font-size: 14px;
+		font-weight: 400;
+		letter-spacing: 0px;
+		line-height: 19.21px;
+		color: rgba(89, 89, 89, 1);
+		text-align: left;
+		vertical-align: top;
+}
+.txt3.data-v-54df7d77 {
+		/*文本 1*/
+		position: fixed;
+		display: flex;
+		left: 16vw;
+		top: 25vh;
+		width: 70vw;
+		height: 121px;
+		opacity: 1;
+		/** 文本1 */
+		font-size: 14px;
+		font-weight: 400;
+		letter-spacing: 0px;
+		line-height: 19.21px;
+		color: rgba(0, 0, 0, 1);
+		text-align: left;
+		vertical-align: top;
+}
+.img1.data-v-54df7d77 {
+		/*image.png*/
+		position: fixed;
+		display: flex;
+		left: 13vw;
+		top: 55vh;
+		width: 319px;
+		height: 172px;
+		opacity: 1;
+		border-radius: 5px;
+		background: url(https://img.js.design/assets/img/64a4c3c97073f71b30bb8e84.png#e70ab943e1e2599d41d445a309e594d0);
+}

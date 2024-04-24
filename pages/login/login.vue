@@ -15,6 +15,11 @@
 	import {
 		storeToRefs
 	} from 'pinia';
+	const store = useStore();
+	const {
+			uid,
+			login
+		} = storeToRefs(store)
 	const usr_info = ref()
 	const logins = (e) => {
 		uni.login({
@@ -48,6 +53,8 @@
 						// 输出转换后的JSON对象
 						usr_info.value = jsonObj
 						console.log(usr_info.value.uid);
+						store.setUid(usr_info.value.uid);
+						store.setLogin(true);
 					}
 				});
 			},
@@ -57,15 +64,10 @@
 			}
 		})
 	}
-	const store = useStore();
-	const {
-			uid,
-			login
-		} = storeToRefs(store)
+	
 	function stare(){
 		console.log(123);
-		store.setUid(usr_info.value.uid);
-		store.setLogin(true);
+		
 		console.log(store.$state.uid);
 		console.log(store.$state.loginState);
 	}

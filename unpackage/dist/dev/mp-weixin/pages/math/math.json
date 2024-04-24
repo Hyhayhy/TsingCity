@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "uni-app",
+  "navigationBarTitleText": "景点信息",
   "usingComponents": {
     "uni-list-item": "../../uni_modules/uni-list/components/uni-list-item/uni-list-item",
     "uni-list": "../../uni_modules/uni-list/components/uni-list/uni-list",

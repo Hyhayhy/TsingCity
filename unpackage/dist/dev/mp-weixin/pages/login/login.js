@@ -4,13 +4,15 @@ const store_index = require("../../store/index.js");
 const _sfc_main = {
   __name: "login",
   setup(__props) {
+    const store = store_index.useStore();
+    common_vendor.storeToRefs(store);
     const usr_info = common_vendor.ref();
     const logins = (e) => {
-      common_vendor.index.login({
+      common_vendor.index$1.login({
         "provider": "weixin",
         success: function(event) {
           console.log(event);
-          common_vendor.index.request({
+          common_vendor.index$1.request({
             url: "http://101.42.249.157:9001/userInfos/login",
             //仅为示例，并非真实接口地址。
             method: "POST",
@@ -27,6 +29,8 @@ const _sfc_main = {
               }
               usr_info.value = jsonObj;
               console.log(usr_info.value.uid);
+              store.setUid(usr_info.value.uid);
+              store.setLogin(true);
             }
           });
         },
@@ -34,12 +38,8 @@ const _sfc_main = {
         }
       });
     };
-    const store = store_index.useStore();
-    common_vendor.storeToRefs(store);
     function stare() {
       console.log(123);
-      store.setUid(usr_info.value.uid);
-      store.setLogin(true);
       console.log(store.$state.uid);
       console.log(store.$state.loginState);
     }
@@ -51,5 +51,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/pages/login/login.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/pages/login/login.vue"]]);
 wx.createPage(MiniProgramPage);

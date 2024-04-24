@@ -44,7 +44,7 @@
 	}
 	const goquestion=()=>{
 		uni.navigateTo({
-			url: "/pages/login/login",
+			url: "/pages/question/question",
 		});
 	}
 	const gomap=()=>{

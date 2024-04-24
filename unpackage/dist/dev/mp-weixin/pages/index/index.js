@@ -16,7 +16,7 @@ const _sfc_main = {
       isFlipped.value = false;
     };
     const get_info = () => {
-      common_vendor.index.request({
+      common_vendor.index$1.request({
         url: "http://hexpect.cn:9001/homepage/getInfo",
         // url: '/api/homepage/getInfo',
         success(res) {
@@ -97,7 +97,7 @@ const _sfc_main = {
       const store = store_index.useStore();
       common_vendor.storeToRefs(store);
       if (!store.$state.loginState) {
-        common_vendor.index.redirectTo({
+        common_vendor.index$1.redirectTo({
           url: "/pages/login/login"
         });
       }
@@ -127,5 +127,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/TsingCity/pages/index/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "/Users/apple/Desktop/TsingCity/pages/index/index.vue"]]);
 wx.createPage(MiniProgramPage);

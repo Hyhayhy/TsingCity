@@ -220,19 +220,19 @@ const _sfc_main = {
       };
       switch (api) {
         case "navigateTo":
-          common_vendor.index.navigateTo(callback);
+          common_vendor.index$1.navigateTo(callback);
           break;
         case "redirectTo":
-          common_vendor.index.redirectTo(callback);
+          common_vendor.index$1.redirectTo(callback);
           break;
         case "reLaunch":
-          common_vendor.index.reLaunch(callback);
+          common_vendor.index$1.reLaunch(callback);
           break;
         case "switchTab":
-          common_vendor.index.switchTab(callback);
+          common_vendor.index$1.switchTab(callback);
           break;
         default:
-          common_vendor.index.navigateTo(callback);
+          common_vendor.index$1.navigateTo(callback);
       }
     }
   }
@@ -318,5 +318,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     J: common_vendor.o((...args) => $options.onClick && $options.onClick(...args))
   });
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/TsingCity/uni_modules/uni-list/components/uni-list-item/uni-list-item.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/apple/Desktop/TsingCity/uni_modules/uni-list/components/uni-list-item/uni-list-item.vue"]]);
 wx.createComponent(Component);

@@ -14,86 +14,6 @@ function makeMap(str, expectsLowerCase) {
   }
   return expectsLowerCase ? (val) => !!map[val.toLowerCase()] : (val) => !!map[val];
 }
-const EMPTY_OBJ = Object.freeze({});
-const EMPTY_ARR = Object.freeze([]);
-const NOOP = () => {
-};
-const NO = () => false;
-const isOn = (key) => key.charCodeAt(0) === 111 && key.charCodeAt(1) === 110 && // uppercase letter
-(key.charCodeAt(2) > 122 || key.charCodeAt(2) < 97);
-const isModelListener = (key) => key.startsWith("onUpdate:");
-const extend = Object.assign;
-const remove = (arr, el) => {
-  const i = arr.indexOf(el);
-  if (i > -1) {
-    arr.splice(i, 1);
-  }
-};
-const hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-const hasOwn = (val, key) => hasOwnProperty$1.call(val, key);
-const isArray = Array.isArray;
-const isMap = (val) => toTypeString(val) === "[object Map]";
-const isSet = (val) => toTypeString(val) === "[object Set]";
-const isFunction = (val) => typeof val === "function";
-const isString = (val) => typeof val === "string";
-const isSymbol = (val) => typeof val === "symbol";
-const isObject = (val) => val !== null && typeof val === "object";
-const isPromise = (val) => {
-  return (isObject(val) || isFunction(val)) && isFunction(val.then) && isFunction(val.catch);
-};
-const objectToString = Object.prototype.toString;
-const toTypeString = (value) => objectToString.call(value);
-const toRawType = (value) => {
-  return toTypeString(value).slice(8, -1);
-};
-const isPlainObject$1 = (val) => toTypeString(val) === "[object Object]";
-const isIntegerKey = (key) => isString(key) && key !== "NaN" && key[0] !== "-" && "" + parseInt(key, 10) === key;
-const isReservedProp = /* @__PURE__ */ makeMap(
-  // the leading comma is intentional so empty string "" is also included
-  ",key,ref,ref_for,ref_key,onVnodeBeforeMount,onVnodeMounted,onVnodeBeforeUpdate,onVnodeUpdated,onVnodeBeforeUnmount,onVnodeUnmounted"
-);
-const isBuiltInDirective = /* @__PURE__ */ makeMap(
-  "bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo"
-);
-const cacheStringFunction = (fn) => {
-  const cache = /* @__PURE__ */ Object.create(null);
-  return (str) => {
-    const hit = cache[str];
-    return hit || (cache[str] = fn(str));
-  };
-};
-const camelizeRE = /-(\w)/g;
-const camelize = cacheStringFunction((str) => {
-  return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
-});
-const hyphenateRE = /\B([A-Z])/g;
-const hyphenate = cacheStringFunction(
-  (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
-);
-const capitalize = cacheStringFunction((str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-});
-const toHandlerKey = cacheStringFunction((str) => {
-  const s2 = str ? `on${capitalize(str)}` : ``;
-  return s2;
-});
-const hasChanged = (value, oldValue) => !Object.is(value, oldValue);
-const invokeArrayFns$1 = (fns, arg) => {
-  for (let i = 0; i < fns.length; i++) {
-    fns[i](arg);
-  }
-};
-const def = (obj, key, value) => {
-  Object.defineProperty(obj, key, {
-    configurable: true,
-    enumerable: false,
-    value
-  });
-};
-const looseToNumber = (val) => {
-  const n2 = parseFloat(val);
-  return isNaN(n2) ? val : n2;
-};
 function normalizeStyle(value) {
   if (isArray(value)) {
     const res = {};
@@ -107,13 +27,15 @@ function normalizeStyle(value) {
       }
     }
     return res;
-  } else if (isString(value) || isObject(value)) {
+  } else if (isString(value)) {
+    return value;
+  } else if (isObject(value)) {
     return value;
   }
 }
 const listDelimiterRE = /;(?![^(]*\))/g;
 const propertyDelimiterRE = /:([^]+)/;
-const styleCommentRE = /\/\*[^]*?\*\//g;
+const styleCommentRE = /\/\*.*?\*\//gs;
 function parseStringStyle(cssText) {
   const ret = {};
   cssText.replace(styleCommentRE, "").split(listDelimiterRE).forEach((item) => {
@@ -152,28 +74,90 @@ const replacer = (_key, val) => {
     return replacer(_key, val.value);
   } else if (isMap(val)) {
     return {
-      [`Map(${val.size})`]: [...val.entries()].reduce(
-        (entries, [key, val2], i) => {
-          entries[stringifySymbol(key, i) + " =>"] = val2;
-          return entries;
-        },
-        {}
-      )
+      [`Map(${val.size})`]: [...val.entries()].reduce((entries, [key, val2]) => {
+        entries[`${key} =>`] = val2;
+        return entries;
+      }, {})
     };
   } else if (isSet(val)) {
     return {
-      [`Set(${val.size})`]: [...val.values()].map((v) => stringifySymbol(v))
+      [`Set(${val.size})`]: [...val.values()]
     };
-  } else if (isSymbol(val)) {
-    return stringifySymbol(val);
   } else if (isObject(val) && !isArray(val) && !isPlainObject$1(val)) {
     return String(val);
   }
   return val;
 };
-const stringifySymbol = (v, i = "") => {
-  var _a2;
-  return isSymbol(v) ? `Symbol(${(_a2 = v.description) != null ? _a2 : i})` : v;
+const EMPTY_OBJ = Object.freeze({});
+const EMPTY_ARR = Object.freeze([]);
+const NOOP = () => {
+};
+const NO = () => false;
+const onRE = /^on[^a-z]/;
+const isOn = (key) => onRE.test(key);
+const isModelListener = (key) => key.startsWith("onUpdate:");
+const extend = Object.assign;
+const remove = (arr, el) => {
+  const i = arr.indexOf(el);
+  if (i > -1) {
+    arr.splice(i, 1);
+  }
+};
+const hasOwnProperty$1 = Object.prototype.hasOwnProperty;
+const hasOwn = (val, key) => hasOwnProperty$1.call(val, key);
+const isArray = Array.isArray;
+const isMap = (val) => toTypeString(val) === "[object Map]";
+const isSet = (val) => toTypeString(val) === "[object Set]";
+const isFunction = (val) => typeof val === "function";
+const isString = (val) => typeof val === "string";
+const isSymbol = (val) => typeof val === "symbol";
+const isObject = (val) => val !== null && typeof val === "object";
+const isPromise = (val) => {
+  return isObject(val) && isFunction(val.then) && isFunction(val.catch);
+};
+const objectToString = Object.prototype.toString;
+const toTypeString = (value) => objectToString.call(value);
+const toRawType = (value) => {
+  return toTypeString(value).slice(8, -1);
+};
+const isPlainObject$1 = (val) => toTypeString(val) === "[object Object]";
+const isIntegerKey = (key) => isString(key) && key !== "NaN" && key[0] !== "-" && "" + parseInt(key, 10) === key;
+const isReservedProp = /* @__PURE__ */ makeMap(
+  // the leading comma is intentional so empty string "" is also included
+  ",key,ref,ref_for,ref_key,onVnodeBeforeMount,onVnodeMounted,onVnodeBeforeUpdate,onVnodeUpdated,onVnodeBeforeUnmount,onVnodeUnmounted"
+);
+const isBuiltInDirective = /* @__PURE__ */ makeMap("bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo");
+const cacheStringFunction = (fn) => {
+  const cache = /* @__PURE__ */ Object.create(null);
+  return (str) => {
+    const hit = cache[str];
+    return hit || (cache[str] = fn(str));
+  };
+};
+const camelizeRE = /-(\w)/g;
+const camelize = cacheStringFunction((str) => {
+  return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
+});
+const hyphenateRE = /\B([A-Z])/g;
+const hyphenate = cacheStringFunction((str) => str.replace(hyphenateRE, "-$1").toLowerCase());
+const capitalize = cacheStringFunction((str) => str.charAt(0).toUpperCase() + str.slice(1));
+const toHandlerKey = cacheStringFunction((str) => str ? `on${capitalize(str)}` : ``);
+const hasChanged = (value, oldValue) => !Object.is(value, oldValue);
+const invokeArrayFns$1 = (fns, arg) => {
+  for (let i = 0; i < fns.length; i++) {
+    fns[i](arg);
+  }
+};
+const def = (obj, key, value) => {
+  Object.defineProperty(obj, key, {
+    configurable: true,
+    enumerable: false,
+    value
+  });
+};
+const looseToNumber = (val) => {
+  const n2 = parseFloat(val);
+  return isNaN(n2) ? val : n2;
 };
 const LINEFEED = "\n";
 const SLOT_DEFAULT_NAME = "d";
@@ -184,7 +168,6 @@ const ON_ERROR = "onError";
 const ON_THEME_CHANGE = "onThemeChange";
 const ON_PAGE_NOT_FOUND = "onPageNotFound";
 const ON_UNHANDLE_REJECTION = "onUnhandledRejection";
-const ON_EXIT = "onExit";
 const ON_LOAD = "onLoad";
 const ON_READY = "onReady";
 const ON_UNLOAD = "onUnload";
@@ -301,7 +284,6 @@ const UniLifecycleHooks = [
   ON_THEME_CHANGE,
   ON_PAGE_NOT_FOUND,
   ON_UNHANDLE_REJECTION,
-  ON_EXIT,
   ON_INIT,
   ON_LOAD,
   ON_READY,
@@ -392,13 +374,10 @@ E.prototype = {
     var evts = e2[name];
     var liveEvents = [];
     if (evts && callback) {
-      for (var i = evts.length - 1; i >= 0; i--) {
-        if (evts[i].fn === callback || evts[i].fn._ === callback) {
-          evts.splice(i, 1);
-          break;
-        }
+      for (var i = 0, len = evts.length; i < len; i++) {
+        if (evts[i].fn !== callback && evts[i].fn._ !== callback)
+          liveEvents.push(evts[i]);
       }
-      liveEvents = evts;
     }
     liveEvents.length ? e2[name] = liveEvents : delete e2[name];
     return this;
@@ -786,15 +765,10 @@ function formatApiArgs(args, options) {
   }
 }
 function invokeSuccess(id, name, res) {
-  const result = {
-    errMsg: name + ":ok"
-  };
-  return invokeCallback(id, extend(res || {}, result));
+  return invokeCallback(id, extend(res || {}, { errMsg: name + ":ok" }));
 }
-function invokeFail(id, name, errMsg, errRes = {}) {
-  const apiErrMsg = name + ":fail" + (errMsg ? " " + errMsg : "");
-  delete errRes.errCode;
-  return invokeCallback(id, typeof UniError !== "undefined" ? typeof errRes.errCode !== "undefined" ? new UniError(name, errRes.errCode, apiErrMsg) : new UniError(apiErrMsg, errRes) : extend({ errMsg: apiErrMsg }, errRes));
+function invokeFail(id, name, errMsg, errRes) {
+  return invokeCallback(id, extend({ errMsg: name + ":fail" + (errMsg ? " " + errMsg : "") }, errRes));
 }
 function beforeInvokeApi(name, args, protocol, options) {
   {
@@ -1292,8 +1266,8 @@ function populateParameters(fromRes, toRes) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "4.08",
-    uniRuntimeVersion: "4.08",
+    uniCompileVersion: "3.8.12",
+    uniRuntimeVersion: "3.8.12",
     uniPlatform: "mp-weixin",
     deviceBrand,
     deviceModel: model,
@@ -1606,7 +1580,7 @@ var protocols = /* @__PURE__ */ Object.freeze({
   showActionSheet
 });
 const wx$1 = initWx();
-var index = initUni(shims, protocols, wx$1);
+var index$1 = initUni(shims, protocols, wx$1);
 function warn$1(msg, ...args) {
   console.warn(`[Vue warn] ${msg}`, ...args);
 }
@@ -2602,13 +2576,13 @@ function toRef(object, key, defaultValue) {
   const val = object[key];
   return isRef(val) ? val : new ObjectRefImpl(object, key, defaultValue);
 }
-var _a;
+var _a$1;
 class ComputedRefImpl {
   constructor(getter, _setter, isReadonly2, isSSR) {
     this._setter = _setter;
     this.dep = void 0;
     this.__v_isRef = true;
-    this[_a] = false;
+    this[_a$1] = false;
     this._dirty = true;
     this.effect = new ReactiveEffect(getter, () => {
       if (!this._dirty) {
@@ -2636,7 +2610,7 @@ class ComputedRefImpl {
     this._setter(newValue);
   }
 }
-_a = "__v_isReadonly";
+_a$1 = "__v_isReadonly";
 function computed$1(getterOrOptions, debugOptions, isSSR = false) {
   let getter;
   let setter;
@@ -3104,7 +3078,7 @@ function emit$1(event, ...args) {
   }
 }
 function setDevtoolsHook(hook, target) {
-  var _a2, _b;
+  var _a2, _b2;
   devtools = hook;
   if (devtools) {
     devtools.enabled = true;
@@ -3118,7 +3092,7 @@ function setDevtoolsHook(hook, target) {
     // eslint-disable-next-line no-restricted-globals
     window.HTMLElement && // also exclude jsdom
     // eslint-disable-next-line no-restricted-globals
-    !((_b = (_a2 = window.navigator) === null || _a2 === void 0 ? void 0 : _a2.userAgent) === null || _b === void 0 ? void 0 : _b.includes("jsdom"))
+    !((_b2 = (_a2 = window.navigator) === null || _a2 === void 0 ? void 0 : _a2.userAgent) === null || _b2 === void 0 ? void 0 : _b2.includes("jsdom"))
   ) {
     const replay = target.__VUE_DEVTOOLS_HOOK_REPLAY__ = target.__VUE_DEVTOOLS_HOOK_REPLAY__ || [];
     replay.push((newHook) => {
@@ -5784,14 +5758,6 @@ function applyOptions$2(options, instance, publicThis) {
 function set$3(target, key, val) {
   return target[key] = val;
 }
-function $callMethod(method, ...args) {
-  const fn = this[method];
-  if (fn) {
-    return fn(...args);
-  }
-  console.error(`method ${method} not found`);
-  return null;
-}
 function createErrorHandler(app) {
   return function errorHandler(err, instance, _info) {
     if (!instance) {
@@ -5844,7 +5810,7 @@ function b64DecodeUnicode(str) {
   }).join(""));
 }
 function getCurrentUserInfo() {
-  const token = index.getStorageSync("uni_id_token") || "";
+  const token = index$1.getStorageSync("uni_id_token") || "";
   const tokenArr = token.split(".");
   if (!token || tokenArr.length !== 3) {
     return {
@@ -5890,10 +5856,9 @@ function initApp(app) {
   {
     globalProperties.$set = set$3;
     globalProperties.$applyOptions = applyOptions$2;
-    globalProperties.$callMethod = $callMethod;
   }
   {
-    index.invokeCreateVueAppHook(app);
+    index$1.invokeCreateVueAppHook(app);
   }
 }
 const propsCaches = /* @__PURE__ */ Object.create(null);
@@ -5936,7 +5901,7 @@ var plugin = {
 };
 function getCreateApp() {
   const method = "createApp";
-  if (typeof global !== "undefined" && typeof global[method] !== "undefined") {
+  if (typeof global !== "undefined") {
     return global[method];
   } else if (typeof my !== "undefined") {
     return my[method];
@@ -6281,12 +6246,6 @@ function parseApp(instance, parseAppOptions) {
       instance.$callHook(ON_LAUNCH, options);
     }
   };
-  const { onError } = internalInstance;
-  if (onError) {
-    internalInstance.appContext.config.errorHandler = (err) => {
-      instance.$callHook(ON_ERROR, err);
-    };
-  }
   initLocale(instance);
   const vueOptions = instance.$.type;
   initHooks(appOptions, HOOKS);
@@ -6939,7 +6898,6 @@ function del(target, key) {
   */
 let activePinia;
 const setActivePinia = (pinia) => activePinia = pinia;
-const getActivePinia = () => getCurrentInstance() && inject(piniaSymbol) || activePinia;
 const piniaSymbol = Symbol("pinia");
 function isPlainObject(o2) {
   return o2 && typeof o2 === "object" && Object.prototype.toString.call(o2) === "[object Object]" && typeof o2.toJSON !== "function";
@@ -6954,8 +6912,6 @@ const IS_CLIENT = typeof window !== "undefined";
 const USE_DEVTOOLS = IS_CLIENT;
 const componentStateTypes = [];
 const getStoreType = (id) => "🍍 " + id;
-function registerPiniaDevtools(app, pinia) {
-}
 function addStoreToDevtools(app, store) {
   if (!componentStateTypes.includes(getStoreType(store.$id))) {
     componentStateTypes.push(getStoreType(store.$id));
@@ -7042,9 +6998,6 @@ function createPinia() {
   }
   return pinia;
 }
-const isUseStore = (fn) => {
-  return typeof fn === "function" && typeof fn.$id === "string";
-};
 function patchObject(newState, oldState) {
   for (const key in oldState) {
     const subPatch = oldState[key];
@@ -7061,31 +7014,6 @@ function patchObject(newState, oldState) {
     }
   }
   return newState;
-}
-function acceptHMRUpdate(initialUseStore, hot) {
-  return (newModule) => {
-    const pinia = hot.data.pinia || initialUseStore._pinia;
-    if (!pinia) {
-      return;
-    }
-    hot.data.pinia = pinia;
-    for (const exportName in newModule) {
-      const useStore = newModule[exportName];
-      if (isUseStore(useStore) && pinia._s.has(useStore.$id)) {
-        const id = useStore.$id;
-        if (id !== initialUseStore.$id) {
-          console.warn(`The id of the store changed from "${initialUseStore.$id}" to "${id}". Reloading.`);
-          return hot.invalidate();
-        }
-        const existingStore = pinia._s.get(id);
-        if (!existingStore) {
-          console.log(`[Pinia]: skipping hmr because store doesn't exist yet`);
-          return;
-        }
-        useStore(pinia, existingStore);
-      }
-    }
-  };
 }
 const noop = () => {
 };
@@ -7129,9 +7057,6 @@ function mergeReactiveObjects(target, patchToApply) {
   return target;
 }
 const skipHydrateSymbol = Symbol("pinia:skipHydration");
-function skipHydrate(obj) {
-  return Object.defineProperty(obj, skipHydrateSymbol, {});
-}
 function shouldHydrate(obj) {
   return !isPlainObject(obj) || !obj.hasOwnProperty(skipHydrateSymbol);
 }
@@ -7548,79 +7473,6 @@ This will fail in production.`);
   useStore.$id = id;
   return useStore;
 }
-let mapStoreSuffix = "Store";
-function setMapStoreSuffix(suffix) {
-  mapStoreSuffix = suffix;
-}
-function mapStores(...stores) {
-  if (Array.isArray(stores[0])) {
-    console.warn(`[🍍]: Directly pass all stores to "mapStores()" without putting them in an array:
-Replace
-	mapStores([useAuthStore, useCartStore])
-with
-	mapStores(useAuthStore, useCartStore)
-This will fail in production if not fixed.`);
-    stores = stores[0];
-  }
-  return stores.reduce((reduced, useStore) => {
-    reduced[useStore.$id + mapStoreSuffix] = function() {
-      return useStore(this.$pinia);
-    };
-    return reduced;
-  }, {});
-}
-function mapState(useStore, keysOrMapper) {
-  return Array.isArray(keysOrMapper) ? keysOrMapper.reduce((reduced, key) => {
-    reduced[key] = function() {
-      return useStore(this.$pinia)[key];
-    };
-    return reduced;
-  }, {}) : Object.keys(keysOrMapper).reduce((reduced, key) => {
-    reduced[key] = function() {
-      const store = useStore(this.$pinia);
-      const storeKey = keysOrMapper[key];
-      return typeof storeKey === "function" ? storeKey.call(this, store) : store[storeKey];
-    };
-    return reduced;
-  }, {});
-}
-const mapGetters = mapState;
-function mapActions(useStore, keysOrMapper) {
-  return Array.isArray(keysOrMapper) ? keysOrMapper.reduce((reduced, key) => {
-    reduced[key] = function(...args) {
-      return useStore(this.$pinia)[key](...args);
-    };
-    return reduced;
-  }, {}) : Object.keys(keysOrMapper).reduce((reduced, key) => {
-    reduced[key] = function(...args) {
-      return useStore(this.$pinia)[keysOrMapper[key]](...args);
-    };
-    return reduced;
-  }, {});
-}
-function mapWritableState(useStore, keysOrMapper) {
-  return Array.isArray(keysOrMapper) ? keysOrMapper.reduce((reduced, key) => {
-    reduced[key] = {
-      get() {
-        return useStore(this.$pinia)[key];
-      },
-      set(value) {
-        return useStore(this.$pinia)[key] = value;
-      }
-    };
-    return reduced;
-  }, {}) : Object.keys(keysOrMapper).reduce((reduced, key) => {
-    reduced[key] = {
-      get() {
-        return useStore(this.$pinia)[keysOrMapper[key]];
-      },
-      set(value) {
-        return useStore(this.$pinia)[keysOrMapper[key]] = value;
-      }
-    };
-    return reduced;
-  }, {});
-}
 function storeToRefs(store) {
   {
     store = toRaw(store);
@@ -7635,60 +7487,60 @@ function storeToRefs(store) {
     return refs;
   }
 }
-const PiniaVuePlugin = function(_Vue) {
-  _Vue.mixin({
-    beforeCreate() {
-      const options = this.$options;
-      if (options.pinia) {
-        const pinia = options.pinia;
-        if (!this._provided) {
-          const provideCache = {};
-          Object.defineProperty(this, "_provided", {
-            get: () => provideCache,
-            set: (v) => Object.assign(provideCache, v)
-          });
-        }
-        this._provided[piniaSymbol] = pinia;
-        if (!this.$pinia) {
-          this.$pinia = pinia;
-        }
-        pinia._a = this;
-        if (IS_CLIENT) {
-          setActivePinia(pinia);
-        }
-        if (USE_DEVTOOLS) {
-          registerPiniaDevtools(pinia._a);
-        }
-      } else if (!this.$pinia && options.parent && options.parent.$pinia) {
-        this.$pinia = options.parent.$pinia;
-      }
-    },
-    destroyed() {
-      delete this._pStores;
+var _a, _b;
+const isH5 = typeof index$1 !== "undefined" ? ["web", "h5", void 0].includes((_b = (_a = index$1 == null ? void 0 : index$1.getSystemInfoSync()) == null ? void 0 : _a.uniPlatform) == null ? void 0 : _b.toLocaleLowerCase()) : true;
+const updateStorage = (strategy, store, options) => {
+  const storage = strategy.storage;
+  const storeKey = strategy.key || store.$id;
+  const isCustomStorage = isH5 || (options == null ? void 0 : options.enforceCustomStorage);
+  if (strategy.paths) {
+    const partialState = strategy.paths.reduce((finalObj, key) => {
+      finalObj[key] = store.$state[key];
+      return finalObj;
+    }, {});
+    if (isCustomStorage && storage) {
+      storage.setItem(storeKey, JSON.stringify(partialState));
+    } else {
+      index$1.setStorage({ key: storeKey, data: JSON.stringify(partialState) });
     }
-  });
+  } else if (isCustomStorage && storage) {
+    storage.setItem(storeKey, JSON.stringify(store.$state));
+  } else {
+    index$1.setStorage({ key: storeKey, data: JSON.stringify(store.$state) });
+  }
 };
-const Pinia = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  get MutationType() {
-    return MutationType;
-  },
-  PiniaVuePlugin,
-  acceptHMRUpdate,
-  createPinia,
-  defineStore,
-  getActivePinia,
-  mapActions,
-  mapGetters,
-  mapState,
-  mapStores,
-  mapWritableState,
-  setActivePinia,
-  setMapStoreSuffix,
-  skipHydrate,
-  storeToRefs
-}, Symbol.toStringTag, { value: "Module" }));
-exports.Pinia = Pinia;
+var index = ({ options, store }) => {
+  var _a2, _b2, _c, _d, _e, _f;
+  if ((_a2 = options.persist) == null ? void 0 : _a2.enabled) {
+    const defaultStrat = [
+      {
+        key: store.$id,
+        storage: ((_b2 = options.persist) == null ? void 0 : _b2.H5Storage) || (window == null ? void 0 : window.sessionStorage)
+      }
+    ];
+    const strategies = ((_d = (_c = options.persist) == null ? void 0 : _c.strategies) == null ? void 0 : _d.length) ? (_e = options.persist) == null ? void 0 : _e.strategies : defaultStrat;
+    strategies.forEach((strategy) => {
+      var _a3, _b3;
+      const storage = strategy.storage || ((_a3 = options.persist) == null ? void 0 : _a3.H5Storage) || (window == null ? void 0 : window.sessionStorage);
+      const storeKey = strategy.key || store.$id;
+      let storageResult;
+      if (isH5 || ((_b3 = options.persist) == null ? void 0 : _b3.enforceCustomStorage)) {
+        storageResult = storage.getItem(storeKey);
+      } else {
+        storageResult = index$1.getStorageSync(storeKey);
+      }
+      if (storageResult) {
+        store.$patch(JSON.parse(storageResult));
+        updateStorage(strategy, store, options.persist);
+      }
+    });
+    store.$subscribe(() => {
+      strategies.forEach((strategy) => {
+        updateStorage(strategy, store, options.persist);
+      });
+    }, { detached: ((_f = options.persist) == null ? void 0 : _f.detached) ? true : false });
+  }
+};
 exports._export_sfc = _export_sfc;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
@@ -7696,6 +7548,7 @@ exports.defineStore = defineStore;
 exports.e = e;
 exports.f = f;
 exports.index = index;
+exports.index$1 = index$1;
 exports.n = n;
 exports.o = o;
 exports.onMounted = onMounted;

@@ -18,7 +18,7 @@ const _sfc_main = {
   setup(__props) {
     const list_info = common_vendor.ref();
     const get_list = () => {
-      common_vendor.index.request({
+      common_vendor.index$1.request({
         url: "http://hexpect.cn:9001/att/getAllSpot",
         // url: '/api/att/getAllSpot',
         success(res) {
@@ -34,20 +34,28 @@ const _sfc_main = {
     common_vendor.onMounted(() => {
       get_list();
     });
+    const go_info = (item) => {
+      let jsonObj = JSON.stringify(item);
+      common_vendor.index$1.navigateTo({
+        url: `jdinfo?item=${jsonObj}`
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_vendor.f(list_info.value, (item, k0, i0) => {
           return {
-            a: "025a3990-3-" + i0 + "," + ("025a3990-2-" + i0),
-            b: common_vendor.p({
+            a: common_vendor.o(($event) => go_info(item)),
+            b: "0f22edd3-3-" + i0 + "," + ("0f22edd3-2-" + i0),
+            c: common_vendor.p({
               title: item.name,
               note: item.dengji,
               showArrow: true,
               thumb: item.imag1,
               ["thumb-size"]: "lg",
-              rightText: "详细"
+              rightText: "详细",
+              link: true
             }),
-            c: "025a3990-2-" + i0 + ",025a3990-1"
+            d: "0f22edd3-2-" + i0 + ",0f22edd3-1"
           };
         }),
         b: common_vendor.p({
@@ -58,5 +66,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/pages/math/math.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/pages/math/math.vue"]]);
 wx.createPage(MiniProgramPage);
