@@ -1,220 +1,144 @@
 <template>
-	<!-- 首先背景图 -->
-	<view class="bg">
+	<view class="Index bg">
 		<navTab></navTab>
-		<!--  轮播图 -->
-		<view>
-			<div class="top">
-				<img src="../../static/th.jpg" />
-			</div>
-		</view>
-		<!-- 搜索框 -->
-		<view>
-			<div class="search">
-				<input type="text" placeholder="搜索" />
-			</div>
-		</view>
-		<!-- 内容 -->
-		<view class="total">
-			<div class="small" v-for="item in list_info" @click="showModal(item.imag1)">
-				<text class="txt">{{item.name}}</text>
-				<button class="btn">收藏</button>
-				<img class="photo" :src="item.imag1" />
-			</div>
-			<div v-if="showModalFlag" class="modal">
-				<span class="close" @click="closeModal">&times;</span>
-				<img :src="currentImage" class="modal-content" />
-			</div>
+		<view class="pubuBox">
+			<view class="pubuItem">
+				<view class="item-masonry" v-for="(item, index) in comList" :key="index">
+					<image :src="item.iurl" mode="widthFix" @click="showFullscreen(item.iurl)"></image>
+					<view class="listtitle">
+						<view class="listtitle3">{{ item.name }}</view>
+					</view>
+					<!-- 添加心形收藏按钮 -->
+					<div class="fullscreen-heart">
+						<image :src="item.isFavorite ? '../../static/favorite-filled.png' : '../../static/favorite-empty.png'"
+							class="heart-icon" @click="toggleFavorite(item)"></image>
+					</div>
+
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
+
 <script setup>
+	import navTab from '../../components/nav-bar/nav_tab.vue'
 	import {
 		onMounted,
 		ref
 	} from "vue";
-	import navTab from '../../components/nav-bar/nav_tab.vue'
-import loginVue from "../login/login.vue";
-	const list_info = ref()
-	const get_list = () => {
+	import {
+		useStore
+	} from '../../store/index'
+	import {
+		storeToRefs
+	} from 'pinia';
+	const store = useStore();
+	const {
+		uid,
+	} = storeToRefs(store)
+	
+	const comList = ref([]); //商品列表
+
+	const get_usr_list = () => {
 		uni.request({
-			url: 'http://101.42.249.157:9001/imageArea/1',
-
+			url: 'http://101.42.249.157:9001/loadAllImage',
 			success(res) {
-				console.log(res.data.data);
-				list_info.value = res.data.data
-			},
-			fail(err) {
-				console.log('请求失败', err);
-			},
-			complete() {
-				console.log('请求完成');
+				comList.value = res.data.data;
 			}
-
 		})
-
 	}
+
 	onMounted(() => {
-		get_list()
-
+		get_usr_list();
 	})
-	const currentImage = ref('');
-	const showModalFlag = ref(false);
 
-	const showModal = (item) => {
+
+	const toggleFavorite = (item) => {
 		// console.log(item);
-		currentImage.value = item;
-		showModalFlag.value = true;
+		item.isFavorite = !item.isFavorite;
+		// 处理收藏逻辑
+		if (item.isFavorite) {
+			// console.log( store.$state.uid);
+			console.log('http://101.42.249.157:9001/favorites/add?uid='+store.$state.uid+'&sid='+item.ispot+'&iid='+item.iid);
+			uni.request({
+				url:'http://101.42.249.157:9001/favorites/add?uid='+store.$state.uid+'&sid='+item.ispot+'&iid='+item.iid,
+				method:"POST",
+				success(res) {
+					// console.log(res);
+				}
+			})
+		} else {
+			console.log('取消收藏成功', item.name);
+		}
 	};
 
-	const closeModal = () => {
-		showModalFlag.value = false;
+	const showFullscreen = (imageUrl) => {
+		uni.previewImage({
+			urls: comList.value.map(item => item.imag1),
+			current: imageUrl,
+			success: () => {}
+		});
 	};
-
-	// 返回响应式状态和方法，供模板使用  
-	//   return {  
-	//     list_info,  
-	//     currentImage,  
-	//     showModalFlag,  
-	//     showModal,  
-	//     closeModal,  
-	//   };  
 </script>
-<style scoped>
-	/* 背景 */
-	.bg {
-		background-image: url('https://img-1310015893.cos.ap-beijing.myqcloud.com/bgimg.png');
-		height: 100vh;
-		background-size: 100% 100%;
-		width: 100vw;
-		position: fixed;
-		display: flex;
-		flex-direction: column;
 
-	}
-
-	/* 轮播图*/
-	.top {
-		left: 0px;
-		top: 88px;
-		width: 100vw;
-		height: 288px;
-		opacity: 1;
-	}
-
-	image {
-		width: 100%;
+<style scoped lang="scss">
+	
+	//瀑布流
+	page {
+		background-color: #eee;
 		height: 100%;
-		background-size: cover;
-		background-repeat: no-repeat center;
 	}
 
-	/* 搜索框 */
-	.search {
-		left: 20px;
-		top: 337px;
-		width: 332px;
-		height: 38px;
-		opacity: 1;
-		border-radius: 20px;
-		background: rgba(227, 227, 227, 0.82);
-		margin: 0 auto;
-		/* background-color: white; */
+	.pubuBox {
+		padding: 22rpx;
 	}
 
-	input {
-
-		float: left;
-		width: 400px;
-		height: 38px;
-		outline: none;
-		border: none;
-		margin-left: 145px;
+	.pubuItem {
+		column-count: 2;
+		column-gap: 20rpx;
 	}
 
-	/* 内容区 */
-
-	.total {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 5px;
-		background-color: white;
-		overflow: auto;
+	.item-masonry {
+		box-sizing: border-box;
+		border-radius: 15rpx;
+		overflow: hidden;
+		background-color: #fff;
+		break-inside: avoid;
+		box-sizing: border-box;
+		margin-bottom: 20rpx;
+		box-shadow: 0px 0px 28rpx 1rpx rgba(78, 101, 153, 0.14);
+		cursor: pointer; // 添加指针样式
+		position: relative; // 相对定位
 	}
 
-	.txt {
-		text-align: center;
-		font-size: 13px;
-		font-weight: bold;
-		font-style: italic;
-	}
-
-	.btn {
-		background-color: rgba(227, 227, 227, 0.82);
-		border: none;
-		float: right;
-		font-size: 7px;
-
-	}
-
-	.small {
-		height: 300px;
-		background-color: white;
-
-
-	}
-
-	.photo {
-		border-radius: 25px;
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-
-	.modal {
-		display: block;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgb(0, 0, 0);
-		background-color: rgba(0, 0, 0, 0.9);
-	}
-
-	.modal-content {
-		margin: auto;
-		display: block;
-		width: 80%;
-		max-width: 700px;
-	}
-
-	.close {
-		position: absolute;
-		top: 15px;
-		right: 35px;
-		color: #f1f1f1;
-		font-size: 40px;
-		font-weight: bold;
-		transition: 0.3s;
-	}
-
-	.close:hover,
-	.close:focus {
-		color: #bbb;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	.scroll-Y {
-		/* height: 300rpx; */
-		height: 1000rpx;
-	}
-
-	.scroll-view_H {
-		white-space: nowrap;
+	.item-masonry image {
 		width: 100%;
 	}
+
+	.listtitle {
+		padding-left: 22rpx;
+		font-size: 24rpx;
+		padding-bottom: 22rpx;
+
+		.listtitle3 {
+			font-size: 28rpx;
+			color: #909399;
+			line-height: 32rpx;
+			padding-top: 22rpx;
+		}
+	}
+
+	.fullscreen-heart {
+	        position: absolute;
+	        // top: 20px;
+			bottom: 5vh;
+	        right: 2px;
+	        z-index: 998;
+	        cursor: pointer;
+	    }
+	
+	    .fullscreen-heart image {
+	        width: 40px;
+	        height: 40px;
+	    }
 </style>

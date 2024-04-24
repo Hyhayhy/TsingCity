@@ -5,6 +5,7 @@
     "pages/me/me",
     "pages/photo/photo",
     "pages/question/question",
+    "pages/question/ques_info",
     "pages/login/login",
     "pages/math/jdinfo"
   ],

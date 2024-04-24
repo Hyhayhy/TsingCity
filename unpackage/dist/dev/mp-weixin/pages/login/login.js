@@ -8,11 +8,11 @@ const _sfc_main = {
     common_vendor.storeToRefs(store);
     const usr_info = common_vendor.ref();
     const logins = (e) => {
-      common_vendor.index$1.login({
+      common_vendor.index.login({
         "provider": "weixin",
         success: function(event) {
           console.log(event);
-          common_vendor.index$1.request({
+          common_vendor.index.request({
             url: "http://101.42.249.157:9001/userInfos/login",
             //仅为示例，并非真实接口地址。
             method: "POST",
@@ -51,5 +51,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/pages/login/login.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/pages/login/login.vue"]]);
 wx.createPage(MiniProgramPage);

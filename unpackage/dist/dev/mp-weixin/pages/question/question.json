@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "问题",
   "usingComponents": {
+    "uni-data-select": "../../uni_modules/uni-data-select/components/uni-data-select/uni-data-select",
     "nav-tab": "../../components/nav-bar/nav_tab"
   }
 }

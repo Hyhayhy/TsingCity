@@ -1,11 +1,12 @@
 <template>
 	<view class="bg">
 		<view class="content">
-			<view class="txt1">青岛栈桥</view>
+			<view class="txt1">{{jd_info.name}}</view>
 			<!-- <view class="txt2">重点文物保护设施</view> -->
-			<view class="txt3">栈桥及回澜阁，即青岛栈桥，俗称前海栈桥、南海栈桥、大码头，青岛海滨风景区的著名景点之一
-				，位于山东省青岛市市南区太平路12号，地处青岛湾北侧，与小青岛隔水相望，始建于清光绪十七年（1891年），素有“长虹远引”之誉，是青岛市近代第一座人工码头、最具代表性和知名度的城市地标之一。</view>
-			<view class="img1"></view>
+			<view class="txt3">{{jd_info.jianjie}}</view>
+			<view class="img1">
+				<img :src="jd_info.imag1" alt="Dynamic Image">
+			</view>
 		</view>
 	</view>
 </template>
@@ -18,16 +19,15 @@
 	export default {
 		data(){
 			return{
-				jd_info:null
+				jd_info:{}
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			// console.log(option); //打印出上个页面传递的参数。
-			jd_info=option
-			console.log(jd_info);
+			this.jd_info=JSON.parse(option.item)
+			// console.log(this.jd_info);
 		}
 	}
-	const jd_info=ref()
 </script>
 
 <style scoped>
@@ -124,6 +124,11 @@
 		height: 172px;
 		opacity: 1;
 		border-radius: 5px;
-		background: url(https://img.js.design/assets/img/64a4c3c97073f71b30bb8e84.png#e70ab943e1e2599d41d445a309e594d0);
+	}
+	.img1 img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover; /* 让图片完整显示 */
+	  border-radius: 5px; /* 如果需要圆角，也可以在这里设置 */
 	}
 </style>

@@ -7,13 +7,14 @@ if (!Math) {
   "./pages/me/me.js";
   "./pages/photo/photo.js";
   "./pages/question/question.js";
+  "./pages/question/ques_info.js";
   "./pages/login/login.js";
   "./pages/math/jdinfo.js";
 }
 const _sfc_main = {};
-const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/apple/Desktop/TsingCity/App.vue"]]);
+const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/TsingCity/App.vue"]]);
 const pinia = common_vendor.createPinia();
-pinia.use(common_vendor.index);
+pinia.use(common_vendor.index$1);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
   app.use(pinia);

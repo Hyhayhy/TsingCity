@@ -3,17 +3,19 @@ const common_vendor = require("../../common/vendor.js");
 const _sfc_main = {
   data() {
     return {
-      jd_info: null
+      jd_info: {}
     };
   },
   onLoad: function(option) {
-    jd_info = option;
-    console.log(jd_info);
+    this.jd_info = JSON.parse(option.item);
   }
 };
-const jd_info = common_vendor.ref();
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return {};
+  return {
+    a: common_vendor.t($data.jd_info.name),
+    b: common_vendor.t($data.jd_info.jianjie),
+    c: $data.jd_info.imag1
+  };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-54df7d77"], ["__file", "/Users/apple/Desktop/TsingCity/pages/math/jdinfo.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-54df7d77"], ["__file", "D:/TsingCity/pages/math/jdinfo.vue"]]);
 wx.createPage(MiniProgramPage);

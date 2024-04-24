@@ -1,19 +1,19 @@
 <template>
-	<view class="Index">
+	<view class="Index bg">
 		<navTab></navTab>
-		<!-- <button @click="get_usr_list">获取信息</button> -->
-		<!-- 瀑布流布局列表 -->
 		<view class="pubuBox">
 			<view class="pubuItem">
 				<view class="item-masonry" v-for="(item, index) in comList" :key="index">
-					<image :src="item.iurl" mode="widthFix"></image>
+					<image :src="item.iurl" mode="widthFix" @click="showFullscreen(item.iurl)"></image>
 					<view class="listtitle">
-						<!-- 这是没有高度的父盒子（下半部分） -->
-						<!-- <view class="listtitle1">{{ item.name }}</view> -->
-						<view class="listtitle3">
-							{{ item.name }}
-						</view>
+						<view class="listtitle3">{{ item.name }}</view>
 					</view>
+					<!-- 添加心形收藏按钮 -->
+					<div class="fullscreen-heart">
+						<image :src="item.isFavorite ?  '../../static/favorite-empty.png':'../../static/favorite-filled.png'"
+							class="heart-icon" @click="toggleFavorite(item)"></image>
+					</div>
+
 				</view>
 			</view>
 		</view>
@@ -23,7 +23,8 @@
 <script setup>
 	import navTab from '../../components/nav-bar/nav_tab.vue'
 	import {
-		onMounted, ref
+		onMounted,
+		ref
 	} from "vue";
 	import {
 		useStore
@@ -35,26 +36,57 @@
 	const {
 		uid,
 	} = storeToRefs(store)
-	const comList = ref(); //商品列表
+	
+	const comList = ref([]); //商品列表
+
 	const get_usr_list = () => {
-		// console.log(123);
-		
-		// console.log(uid);
-		// console.log(123333);
 		uni.request({
 			url: 'http://101.42.249.157:9001/favorite/'+store.$state.uid,
 			success(res) {
-				// console.log(res.data);
-				comList.value=res.data.data
+				comList.value = res.data.data;
 			}
 		})
 	}
+
 	onMounted(() => {
-		get_usr_list()
+		get_usr_list();
+	})
+
+
+	const toggleFavorite = (item) => {
+		// console.log(item);
+		item.isFavorite = !item.isFavorite;
+		// 处理收藏逻辑
+		if (!item.isFavorite) {
+			// console.log( store.$state.uid);
+			console.log('收藏成功');
+		} else {
+			console.log('取消收藏成功', item.name);
+			uni.request({
+				url:'http://101.42.249.157:9001/favorites/uid='+store.$state.uid+'/sid='+item.ispot+'/iid='+item.iid,
+				method:"DELETE",
+				success(res) {
+					// console.log(res);
+				}
+			})
+		}
+	};
+
+	const showFullscreen = (imageUrl) => {
+		console.log(imageUrl);
+		uni.previewImage({
+			urls: [imageUrl],
+			showmenu:true,
+			success: () => {}
+		});
+	};
+	onMounted(()=>{
+		
 	})
 </script>
 
-<style scoped="scoped" lang="scss">
+<style scoped lang="scss">
+	
 	//瀑布流
 	page {
 		background-color: #eee;
@@ -76,10 +108,11 @@
 		overflow: hidden;
 		background-color: #fff;
 		break-inside: avoid;
-		/*避免在元素内部插入分页符*/
 		box-sizing: border-box;
 		margin-bottom: 20rpx;
 		box-shadow: 0px 0px 28rpx 1rpx rgba(78, 101, 153, 0.14);
+		cursor: pointer; // 添加指针样式
+		position: relative; // 相对定位
 	}
 
 	.item-masonry image {
@@ -91,31 +124,6 @@
 		font-size: 24rpx;
 		padding-bottom: 22rpx;
 
-		.listtitle1 {
-			line-height: 39rpx;
-			text-overflow: -o-ellipsis-lastline;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-			line-clamp: 2;
-			-webkit-box-orient: vertical;
-			min-height: 39rpx;
-			max-height: 78rpx;
-		}
-
-		.listtitle2 {
-			color: #ff0000;
-			font-size: 32rpx;
-			line-height: 32rpx;
-			font-weight: bold;
-			padding-top: 22rpx;
-
-			.listtitle2son {
-				font-size: 32rpx;
-			}
-		}
-
 		.listtitle3 {
 			font-size: 28rpx;
 			color: #909399;
@@ -124,8 +132,17 @@
 		}
 	}
 
-	.Index {
-		width: 100%;
-		height: 100%;
-	}
+	.fullscreen-heart {
+	        position: absolute;
+	        // top: 20px;
+			bottom: 5vh;
+	        right: 2px;
+	        z-index: 998;
+	        cursor: pointer;
+	    }
+	
+	    .fullscreen-heart image {
+	        width: 40px;
+	        height: 40px;
+	    }
 </style>
